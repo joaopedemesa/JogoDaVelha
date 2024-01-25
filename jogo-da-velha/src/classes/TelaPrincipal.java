@@ -4,7 +4,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     Jogador j1 = new Jogador();
     Jogador j2 = new Jogador();
     int jogadas;
-    char v[][] = new char[3][3];
+    int v[][] = new int[3][3];
     
     public void aumentarJogadas() {
         jogadas += 1;
@@ -13,9 +13,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     public void preenhcerVetor(int i, int j) {
         //1 se refere ao jogador 1 e 2 ao jogador 2.
         if (jogadas % 2 == 0) {
-            v[i][j] = 'x';
+            v[i][j] = 1;
         } else {
-            v[i][j] = 'o';
+            v[i][j] = 2;
         }
     }
     
@@ -71,14 +71,31 @@ public class TelaPrincipal extends javax.swing.JFrame {
         return null;
     }
     
-    public void rotina() {
-        if (jogadas >= 5) {
-            
-        } else {
-            
-        }
+    public void mudaTexto(javax.swing.JButton btn, int i) {
+        this.setTitle(Integer.toString(i));
+    }
+    
+    public void rotina(int l, int c, Jogador j1, Jogador j2) {
+        Jogador vencedor;
         aumentarJogadas();
-        atualizaJogadas();
+        
+        if (jogadas >= 5) {
+            vencedor = verificaVencedor(j1, j2, l, c);
+        } else {
+            vencedor = null;
+        }
+        //Apenas confirma que nenhum jogador ganhou o jogo ou que o resultado é velha
+        if ((vencedor == null) && (jogadas != 9)) {
+            atualizaJogadas();
+            preenhcerVetor(l, c);
+        } else if ((vencedor == null) && jogadas == 9) {
+            jLabel7.setText("Deu velha!");
+            jPanel4.setVisible(true);
+        } else {
+            jPanel4.setVisible(true);
+            jLabel7.setText(String.format("O vencedor é " + vencedor.getNome()));
+        }
+        
     }
     
     public TelaPrincipal() {
@@ -249,56 +266,65 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1ActionPerformed
-        aumentarJogadas();
-        atualizaJogadas();
+        //aumentarJogadas();
+        //atualizaJogadas();
+        rotina(0, 0, j1, j2);
         // TODO add your handling code here:
     }//GEN-LAST:event_btn1ActionPerformed
 
     private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
-        aumentarJogadas();
-        atualizaJogadas();
+        //aumentarJogadas();
+        //atualizaJogadas();
+        rotina(0, 1, j1, j2);
         // TODO add your handling code here:
     }//GEN-LAST:event_btn2ActionPerformed
 
     private void btn9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn9ActionPerformed
-        aumentarJogadas();
-        atualizaJogadas();
+//        aumentarJogadas();
+//        atualizaJogadas();
+        rotina(2, 2, j1, j2);
         // TODO add your handling code here:
     }//GEN-LAST:event_btn9ActionPerformed
                                         
 
     private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
-        aumentarJogadas();
-        atualizaJogadas();
+//        aumentarJogadas();
+//        atualizaJogadas();
+        rotina(0, 2, j1, j2);
     }//GEN-LAST:event_btn3ActionPerformed
 
     private void btn4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn4ActionPerformed
-        aumentarJogadas();
-        atualizaJogadas();
+//        aumentarJogadas();
+//        atualizaJogadas();
+        rotina(1, 0, j1, j2);
         // TODO add your handling code here:
     }//GEN-LAST:event_btn4ActionPerformed
 
     private void btn5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn5ActionPerformed
-        aumentarJogadas();
-        atualizaJogadas();
+//        aumentarJogadas();
+//        atualizaJogadas();
+        rotina(1, 1, j1, j2);
         // TODO add your handling code here:
     }//GEN-LAST:event_btn5ActionPerformed
 
     private void btn6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn6ActionPerformed
-        aumentarJogadas();
-        atualizaJogadas();
+//        aumentarJogadas();
+//        atualizaJogadas();
+        rotina(1, 2, j1, j2);
         // TODO add your handling code here:
     }//GEN-LAST:event_btn6ActionPerformed
 
     private void btn7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn7ActionPerformed
-        aumentarJogadas();
-        atualizaJogadas();
+//        aumentarJogadas();
+//        atualizaJogadas();
+        rotina(2, 0, j1, j2);
         // TODO add your handling code here:
     }//GEN-LAST:event_btn7ActionPerformed
 
     private void btn8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn8ActionPerformed
-        aumentarJogadas();
-        atualizaJogadas();
+//        aumentarJogadas();
+//        atualizaJogadas();
+        rotina(2, 1, j1, j2);
         // TODO add your handling code here:
     }//GEN-LAST:event_btn8ActionPerformed
 
