@@ -3,9 +3,132 @@ package classes;
 public class TelaPrincipal extends javax.swing.JFrame {
     Jogador j1 = new Jogador();
     Jogador j2 = new Jogador();
+    int jogadas;
+    int v[][] = new int[3][3];
+    
+    public void aumentarJogadas() {
+        jogadas += 1;
+    }
+    
+    public void preenhcerVetor(int i, int j) {
+        //1 se refere ao jogador 1 e 2 ao jogador 2.
+        if (jogadas % 2 == 0) {
+            v[i][j] = 1;
+        } else {
+            v[i][j] = 2;
+        }
+    }
+    
+    public void preencheMatriz(int matriz[][]) {
+        for (int i=0; i<3; i++) {
+            for (int j=0; j<3; j++) {
+                matriz[i][j] = 7;
+            }
+        }
+    }
+    
+    public void atualizaJogadas() {
+        jLabel6.setText(String.format("Jogadas: %d    ", jogadas));
+        for (int i=0; i<3; i++) {
+            for (int j=0; j<3; j++) {
+                jLabel6.setText(String.format(jLabel6.getText() + " %d", v[i][j]));
+            }
+            jLabel6.setText(jLabel6.getText() + "|"); 
+        } 
+        if (jogadas % 2 == 0) {
+            jLabel5.setText(j1.getNome()); 
+        } else {
+            jLabel5.setText(j2.getNome());
+        }
+    }
+    
+    public Jogador verificaVencedor(Jogador j1, Jogador j2, int l, int c) {
+        //Verificar se a linha ou a coluna da jogada está completa:
+        //Usar uma variável auxiliar aux para isso: Se no final aux tiver o valor 3 ou 6
+        //isso significa que houve um vencedor, caso seja diferente não houve vencedor ainda
+        // Após cada verificação e necessario zerar o valor de aux
+        //Primeiro verificando a linha:
+        int aux = 0;
+        for (int i=0; i<3; i++) {
+            aux += v[l][i];
+        }
+        if (aux == 3) {
+            return j1;
+        } else if (aux == 6) {
+            return j2;
+        } else {
+            aux = 0;
+            // Verificando a coluna agora:
+            for (int i=0; i<3; i++) {
+                aux += v[i][c];
+            }
+            if (aux == 3) {
+                return j1;
+            } else if (aux == 6) {
+                return j2;
+            } else {
+                // Verificando a diagonal principal:
+                aux = 0;
+                for (int i=0; i<3; i++) {
+                    aux += v[i][i];
+                }
+                if (aux == 3) {
+                    return j1;
+                } else if (aux == 6) {
+                    return j2;
+                } else {
+                    // Verificando a diagonal secundaria:
+                    aux = 0;
+                    for (int i=0; i<3; i++) {
+                        aux += v[i][2-i];
+                    }
+                    if (aux == 3) {
+                        return j1;
+                    } else if (aux == 6) {
+                        return j2;
+                    } else {
+                        // Nessse ponto e obvio que nenhum jogador ganhou
+                        return null;
+                    }
+                }
+            }
+        }
+    }
+    
+    public void mudaTexto(javax.swing.JButton btn, int i) {
+        this.setTitle(Integer.toString(i));
+    }
+    
+    public void rotina(int l, int c, Jogador j1, Jogador j2) {
+        Jogador vencedor;
+        preenhcerVetor(l, c);
+        aumentarJogadas();
+        
+        if (jogadas >= 5) {
+            vencedor = verificaVencedor(j1, j2, l, c);
+        } else {
+            vencedor = null;
+        }
+        //Apenas confirma que nenhum jogador ganhou o jogo ou que o resultado é velha
+        if ((vencedor == null) && (jogadas != 9)) {
+            atualizaJogadas();
+        } else if ((vencedor == null) && jogadas == 9) {
+            jLabel7.setText("Deu velha!");
+            jPanel4.setVisible(true);
+        } else {
+            jPanel4.setVisible(true);
+            jLabel7.setText(String.format("O vencedor é " + vencedor.getNome()));
+            jPanel1.setVisible(false); 
+        }
+        
+    }
+    
     public TelaPrincipal() {
         initComponents();
         jPanel1.setVisible(false);
+        jPanel3.setVisible(false);
+        jPanel4.setVisible(false); 
+        preencheMatriz(v);
     }
 
     /**
@@ -17,6 +140,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         btn1 = new javax.swing.JButton();
         btn2 = new javax.swing.JButton();
@@ -34,18 +160,80 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         btnComecar = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+
+        jRadioButton1.setText("jRadioButton1");
+
+        jCheckBox1.setText("jCheckBox1");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(700, 500));
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel1.add(btn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(245, 165, 68, 68));
+
+        btn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, 68, 68));
+
+        btn2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(btn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(171, 20, 68, 68));
+
+        btn3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn3ActionPerformed(evt);
+            }
+        });
         jPanel1.add(btn3, new org.netbeans.lib.awtextra.AbsoluteConstraints(245, 20, 68, 68));
+
+        btn4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn4ActionPerformed(evt);
+            }
+        });
         jPanel1.add(btn4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 92, 68, 68));
+
+        btn5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn5ActionPerformed(evt);
+            }
+        });
         jPanel1.add(btn5, new org.netbeans.lib.awtextra.AbsoluteConstraints(171, 92, 68, 68));
+
+        btn6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn6ActionPerformed(evt);
+            }
+        });
         jPanel1.add(btn6, new org.netbeans.lib.awtextra.AbsoluteConstraints(245, 92, 68, 68));
+
+        btn7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn7ActionPerformed(evt);
+            }
+        });
         jPanel1.add(btn7, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 165, 68, 68));
+
+        btn8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn8ActionPerformed(evt);
+            }
+        });
         jPanel1.add(btn8, new org.netbeans.lib.awtextra.AbsoluteConstraints(171, 165, 68, 68));
 
         btn9.addActionListener(new java.awt.event.ActionListener() {
@@ -53,7 +241,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
                 btn9ActionPerformed(evt);
             }
         });
-        jPanel1.add(btn9, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, 68, 68));
+        jPanel1.add(btn9, new org.netbeans.lib.awtextra.AbsoluteConstraints(245, 165, 68, 68));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/jogo-da-velha-exp-500-cortada.png"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, -1, -1));
@@ -80,17 +268,118 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 150, 110));
 
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel4.setText("Vez do jogador");
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel5.setText("---");
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 10, -1, -1));
+
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 10, 220, 50));
+
+        jLabel6.setText("Jogadas");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 40, -1, -1));
+
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setText("Vencedor: ---");
+        jPanel4.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 70, 210, 40));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1ActionPerformed
+        int l=0, c=0;
+//aumentarJogadas();
+        //atualizaJogadas();
+        rotina(l, c, j1, j2);
+        btn1.setVisible(false);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn1ActionPerformed
+
+    private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
+        int l=0, c=1;
+        //aumentarJogadas();
+        //atualizaJogadas();
+        rotina(l, c, j1, j2);
+        btn2.setVisible(false);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn2ActionPerformed
+
     private void btn9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn9ActionPerformed
+        int l=2, c=2;
+//        aumentarJogadas();
+//        atualizaJogadas();
+        rotina(l, c, j1, j2);
+        btn9.setVisible(false);
         // TODO add your handling code here:
     }//GEN-LAST:event_btn9ActionPerformed
+                                        
+
+    private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
+        int l=0, c=2;
+//        aumentarJogadas();
+//        atualizaJogadas();
+        rotina(l, c, j1, j2);
+        btn3.setVisible(false);
+    }//GEN-LAST:event_btn3ActionPerformed
+
+    private void btn4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn4ActionPerformed
+        int l=1, c=0;
+//        aumentarJogadas();
+//        atualizaJogadas();
+        rotina(l, c, j1, j2);
+        btn4.setVisible(false);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn4ActionPerformed
+
+    private void btn5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn5ActionPerformed
+        int l=1, c=1;
+//        aumentarJogadas();
+//        atualizaJogadas();
+        rotina(l, c, j1, j2);
+        btn5.setVisible(false);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn5ActionPerformed
+
+    private void btn6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn6ActionPerformed
+        int l=1, c=2;
+//        aumentarJogadas();
+//        atualizaJogadas();
+        rotina(l, c, j1, j2);
+        btn6.setVisible(false);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn6ActionPerformed
+
+    private void btn7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn7ActionPerformed
+        int l=2, c=0;
+//        aumentarJogadas();
+//        atualizaJogadas();
+        rotina(l, c, j1, j2);
+        btn7.setVisible(false);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn7ActionPerformed
+
+    private void btn8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn8ActionPerformed
+        int l=2, c=1;
+//        aumentarJogadas();
+//        atualizaJogadas();
+        rotina(l, c, j1, j2);
+        btn8.setVisible(false);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn8ActionPerformed
 
     private void btnComecarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComecarActionPerformed
-        jPanel1.setVisible(true);
         j1.setNome(jTextField1.getText());
-        j2.setNome(jTextField2.getText()); 
+        j2.setNome(jTextField2.getText());
+        jPanel1.setVisible(true);
+        jPanel3.setVisible(true);
+        jLabel5.setText(j1.getNome()); 
     }//GEN-LAST:event_btnComecarActionPerformed
 
     /**
@@ -139,11 +428,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btn8;
     private javax.swing.JButton btn9;
     private javax.swing.JButton btnComecar;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
